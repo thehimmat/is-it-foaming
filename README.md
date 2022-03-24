@@ -1,4 +1,4 @@
-# Is It Foaming or Not?
+# Is It Foaming?
 
 ## Intro
 > An application for bioscientists to view images of reactors and mark them as foaming or not foaming
