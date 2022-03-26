@@ -89,6 +89,60 @@ function ImageGallery() {
     }
   }
 
+  const filteredImages = (filter) => {
+    if (filter === 'no filter') {
+      return (
+        reactor.data.slice(0, displayCount).map((reactor, idx) => {
+          const params = {
+            url: reactor.url,
+            time: new Date(),
+            index: idx,
+          }
+          return <div className={gridItems[idx%3]} style={imageDivStyle}>
+            <img style={imageStyle} src={reactor.url} alt='reactor' key={idx} />
+            <p style={{fontSize: '10px', margin: '0px'}}>
+              image taken on {parsePhotoDate(reactor.url)}
+              at {parsePhotoTime(reactor.url)}
+            </p>
+            <p>
+              Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+            </p>
+          </div>
+        })
+      )
+    } else if (filter === 'foaming') {
+      return (
+        foamingList.slice(0, displayCount).map((reactor, idx) => {
+          return <div className={gridItems[idx%3]} style={imageDivStyle}>
+            <img style={imageStyle} src={reactor.url} alt='reactor' key={idx} />
+            <p style={{fontSize: '10px', margin: '0px'}}>
+              image taken on {parsePhotoDate(reactor.url)}
+              at {parsePhotoTime(reactor.url)}
+            </p>
+            <p>
+              Image marked as <b>FOAMY</b>
+            </p>
+          </div>
+        })
+      )
+    } else if (filter === 'notFoaming') {
+      return (
+        notFoamingList.slice(0, displayCount).map((reactor, idx) => {
+          return <div className={gridItems[idx%3]} style={imageDivStyle}>
+            <img style={imageStyle} src={reactor.url} alt='reactor' key={idx} />
+            <p style={{fontSize: '10px', margin: '0px'}}>
+              image taken on {parsePhotoDate(reactor.url)}
+              at {parsePhotoTime(reactor.url)}
+            </p>
+            <p>
+              Image marked as <b>FOAMY</b>
+            </p>
+          </div>
+        })
+      )
+    }
+  }
+
   return (
     <>
       <div onChange={changeFilter}>
