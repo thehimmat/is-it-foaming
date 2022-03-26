@@ -18,8 +18,18 @@ function ImageGallery() {
   const [filter, setFilter] = useState('no filter');
   const [foamingList, setFoamingList] = useState([]);
   const [notFoamingList, setNotFoamingList] = useState([]);
+  const [taggedIndices, setTaggedIndices] = useState([]);
 
   const ref = useRef();
+
+  const parseTaggedIndices = (array) => {
+    for (const i of array) {
+      setTaggedIndices(prev => [...prev, i.index])
+    }
+    // sort indicex in array for faster filtering
+    const sorted = [...taggedIndices].sort((a, b) => a - b)
+    setTaggedIndices(sorted)
+  }
 
   useEffect(() => {
     axios({
@@ -27,6 +37,7 @@ function ImageGallery() {
     })
       .then(imageList => {
         setFoamingList(imageList)
+        parseTaggedIndices(imageList)
       })
       .catch(err => {
         console.error(err)
@@ -37,6 +48,7 @@ function ImageGallery() {
     })
       .then(imageList => {
         setNotFoamingList(imageList)
+        parseTaggedIndices(imageList)
       })
       .catch(err => {
         console.error(err)
@@ -119,7 +131,7 @@ function ImageGallery() {
               image taken on {parsePhotoDate(reactor.url)}
               at {parsePhotoTime(reactor.url)}
             </p>
-            <p>
+            <p style={{color: 'red'}}>
               Image marked as <b>FOAMY</b>
             </p>
           </div>
@@ -134,8 +146,8 @@ function ImageGallery() {
               image taken on {parsePhotoDate(reactor.url)}
               at {parsePhotoTime(reactor.url)}
             </p>
-            <p>
-              Image marked as <b>FOAMY</b>
+            <p style={{color: 'green'}}>
+              Image marked as <b>NOT FOAMY</b>
             </p>
           </div>
         })
