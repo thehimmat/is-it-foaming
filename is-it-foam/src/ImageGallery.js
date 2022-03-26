@@ -86,7 +86,7 @@ function ImageGallery() {
         className="grid-container"
         onScroll={onScroll}
         ref={ref}
-        style={{ height: "80vh", overflowY: "auto" }}
+        style={{ height: "75vh", overflowY: "auto" }}
       >
         {reactor.data.slice(0, displayCount).map((reactor, idx) => {
           return <div className={gridItems[idx%3]} style={imageDivStyle}>
