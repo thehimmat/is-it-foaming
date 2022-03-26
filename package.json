@@ -1,0 +1,19 @@
+{
+  "name": "is-it-foaming-server",
+  "version": "0.0.1",
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "postgres": "^3.0.0"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "node server.js",
+    "client": "cd isItFoaming && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0",
+    "eslint": "^8.12.0"
+  }
+}
