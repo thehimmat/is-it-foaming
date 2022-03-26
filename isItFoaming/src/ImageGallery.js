@@ -24,33 +24,30 @@ function ImageGallery() {
 
   const parseTaggedIndices = (array) => {
     if (array.length) {
+      const output = [];
       for (const i of array) {
-        setTaggedIndices([i.array_index].concat(taggedIndices))
-        console.log('new array: ', taggedIndices)
+        output.push(i.array_index)
       }
-      // sort indicex in array for faster filtering
-      const sorted = taggedIndices.sort((a, b) => a - b)
-      console.log('sorted tagged indices!', sorted)
-      setTaggedIndices(sorted)
+      const sorted = output.sort((a, b) => a - b)
+      setTaggedIndices(prevState => {
+        return [...sorted, ...prevState];
+      })
     }
   }
 
   const handleFoamingListChange = (array) => {
     setFoamingList(array)
     parseTaggedIndices(array)
-    console.log('finished parsing tagged indices: ', taggedIndices);
   }
 
   const handleNotFoamingListChange = (array) => {
     setNotFoamingList(array)
     parseTaggedIndices(array)
-    console.log('finished parsing tagged indices: ', taggedIndices);
   }
 
   useEffect(() => {
     axios('http://localhost:3001/foaming')
       .then(imageList => {
-        console.log('foaming results: ', imageList.data)
         handleFoamingListChange(imageList.data)
       })
       .catch(err => {
@@ -59,7 +56,6 @@ function ImageGallery() {
 
     axios('http://localhost:3001/notFoaming')
       .then(imageList => {
-        console.log('not foaming results: ', imageList.data)
         handleNotFoamingListChange(imageList.data)
       })
       .catch(err => {
