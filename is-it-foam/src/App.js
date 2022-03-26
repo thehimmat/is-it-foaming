@@ -1,7 +1,6 @@
 import React from 'react';
 import ImageGallery from './ImageGallery.js';
 import './App.css';
-import reactor from './reactorData.js';
 
 function App() {
   return (
