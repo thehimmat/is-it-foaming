@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './ImageGallery.css';
 import reactor from './reactorData.js';
@@ -16,41 +16,65 @@ const imageStyle = {
 function ImageGallery() {
   const [displayCount, setDisplayCount] = useState(12);
   const [filter, setFilter] = useState('no filter');
+  const [foamingList, setFoamingList] = useState([]);
+  const [notFoamingList, setNotFoamingList] = useState([]);
 
   const ref = useRef();
 
+  useEffect(() => {
+    axios({
+      url: '/foaming'
+    })
+      .then(imageList => {
+        setFoamingList(imageList)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+
+    axios({
+      url: '/notFoaming'
+    })
+      .then(imageList => {
+        setNotFoamingList(imageList)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  })
+
   const gridItems = ['item1', 'item2', 'item3'];
 
-const parsePhotoDate = (photoURL) => {
-  return photoURL.slice(74, 84);
-}
+  const parsePhotoDate = (photoURL) => {
+    return photoURL.slice(74, 84);
+  }
 
-const parsePhotoTime = (photoURL) => {
-  return photoURL.slice(89, 96);
-}
+  const parsePhotoTime = (photoURL) => {
+    return photoURL.slice(89, 96);
+  }
 
-const tagButton = (label, params) => {
-  return (
-    <button onClick={() => {
-        params.tag = label;
-        console.log('perform ' + label + ' axios request with ', params)
-        axios({
-          method: 'POST',
-          url: '/' + label,
-          data: params,
-        })
-          .then(() => {
-            console.log('successfully tagged image as ' + label)
+  const tagButton = (label, params) => {
+    return (
+      <button onClick={() => {
+          params.tag = label;
+          console.log('perform ' + label + ' axios request with ', params)
+          axios({
+            method: 'POST',
+            url: '/' + label,
+            data: params,
           })
-          .catch(err => {
-            console.error(err);
-          })
-      }}
-    >
-      {label}
-    </button>
-  )
-}
+            .then(() => {
+              console.log('successfully tagged image as ' + label)
+            })
+            .catch(err => {
+              console.error(err);
+            })
+        }}
+      >
+        {label}
+      </button>
+    )
+  }
 
   const changeFilter = (e) => {
     setFilter(e.target.value);
