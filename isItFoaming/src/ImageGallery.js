@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import './ImageGallery.css';
 import reactor from './reactorData.js';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 
 const imageDivStyle = {
   border: 'black 1px solid',
@@ -124,8 +127,7 @@ function ImageGallery() {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
             <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
             <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
-              image taken on {parsePhotoDate(reactor.url)}
-              at {parsePhotoTime(reactor.url)}
+              image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
             </p>
             <p key={'npp'+idx}>
               Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
@@ -139,11 +141,10 @@ function ImageGallery() {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={'fd'+idx}>
             <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'fi'+idx} />
             <p style={{fontSize: '10px', margin: '0px'}} key={'fp'+idx}>
-              image taken on {parsePhotoDate(reactor.image_url)}
-              at {parsePhotoTime(reactor.image_url)}
+              image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
             </p>
             <p style={{color: 'red'}} key={'fpp'+idx}>
-              Image marked as <b key={'fb'+idx}>FOAMY</b>
+              Image marked as <b key={'fb'+idx}>FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
             </p>
           </div>
         })
@@ -154,11 +155,10 @@ function ImageGallery() {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
             <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
             <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
-              image taken on {parsePhotoDate(reactor.image_url)}
-              at {parsePhotoTime(reactor.image_url)}
+              image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
             </p>
             <p style={{color: 'green'}} key={'nfpp'+idx}>
-              Image marked as <b key={'nfb'+idx}>NOT FOAMY</b>
+              Image marked as <b key={'nfb'+idx}>NOT FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
             </p>
           </div>
         })
