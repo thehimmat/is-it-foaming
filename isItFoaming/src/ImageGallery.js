@@ -146,7 +146,9 @@ function ImageGallery() {
                 image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
               </p>
               <p style={{color: 'red'}} key={'fpp'+idx}>
-                Image marked as <b key={'fb'+idx}>FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+                Image marked as <br/>
+                <b key={'fb'+idx}>FOAMY</b><br/>
+                {dayjs(reactor.last_modified).fromNow()}
               </p>
             </div>
           } else if (reactor.tag === 'notFoaming') {
@@ -156,7 +158,9 @@ function ImageGallery() {
                 image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
               </p>
               <p style={{color: 'green'}} key={'nfpp'+idx}>
-                Image marked as <b key={'nfb'+idx}>NOT FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+                Image marked as<br/>
+                <b key={'nfb'+idx}>NOT FOAMY</b><br/>
+                {dayjs(reactor.last_modified).fromNow()}
               </p>
             </div>
           } else {
@@ -171,7 +175,9 @@ function ImageGallery() {
                 image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
               </p>
               <p key={'npp'+idx}>
-                Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+                <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
+                Mark image as:<br/>
+                {tagButton('foaming', params)} {tagButton('notFoaming', params)}
               </p>
             </div>
             }
@@ -186,7 +192,9 @@ function ImageGallery() {
               image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
             </p>
             <p style={{color: 'red'}} key={'fpp'+idx}>
-              Image marked as <b key={'fb'+idx}>FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+              Image marked as <br/>
+              <b key={'fb'+idx}>FOAMY</b><br/>
+              {dayjs(reactor.last_modified).fromNow()}
             </p>
           </div>
         })
@@ -200,7 +208,9 @@ function ImageGallery() {
               image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
             </p>
             <p style={{color: 'green'}} key={'nfpp'+idx}>
-              Image marked as <b key={'nfb'+idx}>NOT FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+              Image marked as<br/>
+              <b key={'nfb'+idx}>NOT FOAMY</b><br/>
+              {dayjs(reactor.last_modified).fromNow()}
             </p>
           </div>
         })
@@ -224,7 +234,9 @@ function ImageGallery() {
               image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
             </p>
             <p key={reactor.url.slice(94, 96)}>
-              Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+              <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
+              Mark image as:<br/>
+              {tagButton('foaming', params)} {tagButton('notFoaming', params)}
             </p>
           </div>
         })
