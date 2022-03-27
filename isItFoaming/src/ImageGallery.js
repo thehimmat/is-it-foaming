@@ -24,33 +24,30 @@ function ImageGallery() {
 
   const parseTaggedIndices = (array) => {
     if (array.length) {
+      const output = [];
       for (const i of array) {
-        setTaggedIndices([i.array_index].concat(taggedIndices))
-        console.log('new array: ', taggedIndices)
+        output.push(i.array_index)
       }
-      // sort indicex in array for faster filtering
-      const sorted = taggedIndices.sort((a, b) => a - b)
-      console.log('sorted tagged indices!', sorted)
-      setTaggedIndices(sorted)
+      const sorted = output.concat(taggedIndices).sort((a, b) => a - b)
+      setTaggedIndices(() => {
+        return [...sorted];
+      })
     }
   }
 
   const handleFoamingListChange = (array) => {
     setFoamingList(array)
     parseTaggedIndices(array)
-    console.log('finished parsing tagged indices: ', taggedIndices);
   }
 
   const handleNotFoamingListChange = (array) => {
     setNotFoamingList(array)
     parseTaggedIndices(array)
-    console.log('finished parsing tagged indices: ', taggedIndices);
   }
 
   useEffect(() => {
     axios('http://localhost:3001/foaming')
       .then(imageList => {
-        console.log('foaming results: ', imageList.data)
         handleFoamingListChange(imageList.data)
       })
       .catch(err => {
@@ -59,7 +56,6 @@ function ImageGallery() {
 
     axios('http://localhost:3001/notFoaming')
       .then(imageList => {
-        console.log('not foaming results: ', imageList.data)
         handleNotFoamingListChange(imageList.data)
       })
       .catch(err => {
@@ -168,12 +164,11 @@ function ImageGallery() {
         })
       )
     } else {
-      console.log('filtering only unclassified images', taggedIndices)
+      let pointer = 0; // for filtering out tagged images
       return (
         reactor.data.slice(0, displayCount)
           .filter((reactor, idx) => {
-            console.log(!taggedIndices.includes(idx), idx)
-            return !taggedIndices.includes(idx)
+              return taggedIndices[pointer++] !== idx ? true : false;
           })
           .map((reactor, idx) => {
           const params = {
@@ -184,8 +179,7 @@ function ImageGallery() {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={idx}>
             <img style={imageStyle} src={reactor.url} alt='reactor' key={reactor.url.slice(88, 90)} />
             <p style={{fontSize: '10px', margin: '0px'}} key={reactor.url.slice(91, 93)}>
-              image taken on {parsePhotoDate(reactor.url)}
-              at {parsePhotoTime(reactor.url)}
+              image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
             </p>
             <p key={reactor.url.slice(94, 96)}>
               Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
