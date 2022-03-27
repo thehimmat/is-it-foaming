@@ -116,23 +116,65 @@ function ImageGallery() {
   }
 
   const filteredImages = (filter) => {
-    if (filter === 'no filter') {
+    if (filter === 'no filter' && (foamingList[0] || notFoamingList[0])) {
+      let pointer = 0; // for filtering out tagged images
+      let foamPointer = 0;
+      let notFoamPointer = 0;
+      const coallatedImages = [];
+      while (foamingList[foamPointer] || notFoamingList[notFoamPointer] || pointer <= reactor.data.length) {
+        console.log('foam: ', foamingList[foamPointer], 'not foam: ', notFoamingList[notFoamPointer], 'pointer: ', pointer);
+        if (foamingList[foamPointer] && pointer > foamingList[foamPointer].array_index) {
+          foamPointer++;
+        } else if (notFoamingList[notFoamPointer] && pointer > notFoamingList[notFoamPointer].array_index) {
+          notFoamPointer++;
+        } else if (foamingList[foamPointer] && foamingList[foamPointer].array_index === pointer) {
+          coallatedImages.push(foamingList[foamPointer++]);
+          pointer++;
+        } else if (notFoamingList[notFoamPointer] && notFoamingList[notFoamPointer].array_index === pointer) {
+          coallatedImages.push(notFoamingList[notFoamPointer++]);
+          pointer++;
+        } else {
+          coallatedImages.push(reactor.data[pointer++])
+        }
+      }
       return (
-        reactor.data.slice(0, displayCount).map((reactor, idx) => {
-          const params = {
-            url: reactor.url,
-            time: new Date(),
-            index: idx,
-          }
-          return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
-            <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
-            <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
-              image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
-            </p>
-            <p key={'npp'+idx}>
-              Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
-            </p>
-          </div>
+        coallatedImages.slice(0, displayCount).map((reactor, idx) => {
+          if (reactor.tag === 'foaming') {
+            return <div className={gridItems[idx%3]} style={imageDivStyle} key={'fd'+idx}>
+              <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'fi'+idx} />
+              <p style={{fontSize: '10px', margin: '0px'}} key={'fp'+idx}>
+                image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+              </p>
+              <p style={{color: 'red'}} key={'fpp'+idx}>
+                Image marked as <b key={'fb'+idx}>FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+              </p>
+            </div>
+          } else if (reactor.tag === 'notFoaming') {
+            return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
+              <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
+              <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
+                image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+              </p>
+              <p style={{color: 'green'}} key={'nfpp'+idx}>
+                Image marked as <b key={'nfb'+idx}>NOT FOAMY</b> {dayjs(reactor.last_modified).fromNow()}
+              </p>
+            </div>
+          } else {
+            const params = {
+              url: reactor.url,
+              time: new Date(),
+              index: idx,
+            }
+            return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
+              <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
+              <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
+                image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
+              </p>
+              <p key={'npp'+idx}>
+                Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+              </p>
+            </div>
+            }
         })
       )
     } else if (filter === 'foaming') {
