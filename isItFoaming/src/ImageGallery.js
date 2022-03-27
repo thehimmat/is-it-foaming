@@ -97,7 +97,7 @@ function ImageGallery() {
             })
         }}
       >
-        {label}
+        {label === 'foaming' ? label : 'not foaming'}
       </button>
     )
   }
