@@ -28,9 +28,9 @@ function ImageGallery() {
       for (const i of array) {
         output.push(i.array_index)
       }
-      const sorted = output.sort((a, b) => a - b)
-      setTaggedIndices(prevState => {
-        return [...sorted, ...prevState];
+      const sorted = output.concat(taggedIndices).sort((a, b) => a - b)
+      setTaggedIndices(() => {
+        return [...sorted];
       })
     }
   }
@@ -164,12 +164,11 @@ function ImageGallery() {
         })
       )
     } else {
-      console.log('filtering only unclassified images', taggedIndices)
+      let pointer = 0; // for filtering out tagged images
       return (
         reactor.data.slice(0, displayCount)
           .filter((reactor, idx) => {
-            console.log(!taggedIndices.includes(idx), idx)
-            return !taggedIndices.includes(idx)
+              return taggedIndices[pointer++] !== idx ? true : false;
           })
           .map((reactor, idx) => {
           const params = {
@@ -180,8 +179,7 @@ function ImageGallery() {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={idx}>
             <img style={imageStyle} src={reactor.url} alt='reactor' key={reactor.url.slice(88, 90)} />
             <p style={{fontSize: '10px', margin: '0px'}} key={reactor.url.slice(91, 93)}>
-              image taken on {parsePhotoDate(reactor.url)}
-              at {parsePhotoTime(reactor.url)}
+              image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
             </p>
             <p key={reactor.url.slice(94, 96)}>
               Mark image as: {tagButton('foaming', params)} {tagButton('notFoaming', params)}
