@@ -89,6 +89,7 @@ function ImageGallery() {
           })
             .then(result => {
               console.log('investigate result: ', JSON.parse(result.config.data))
+              setFilter(label);
               const transform = {
                 image_url: JSON.parse(result.config.data).url,
                 tag: JSON.parse(result.config.data).tag,
@@ -227,27 +228,11 @@ function ImageGallery() {
       )
     } else {
       let pointer = 0; // for filtering out tagged images
-      let foamPointer = 0;
-      let notFoamPointer = 0;
-      const coallatedImages = [];
-      while ((foamingList[foamPointer] || notFoamingList[notFoamPointer]) || pointer <= 2100) {
-        if (foamingList[foamPointer] && pointer > foamingList[foamPointer].array_index) {
-          foamPointer++;
-        } else if (notFoamingList[notFoamPointer] && pointer > notFoamingList[notFoamPointer].array_index) {
-          notFoamPointer++;
-        } else if (foamingList[foamPointer] && foamingList[foamPointer].array_index === pointer) {
-          pointer++;
-        } else if (notFoamingList[notFoamPointer] && notFoamingList[notFoamPointer].array_index === pointer) {
-          pointer++;
-        } else {
-          coallatedImages.push(reactor.data[pointer++])
-        }
-      }
       return (
-        coallatedImages.slice(0, displayCount)
-          // .filter((reactor, idx) => {
-          //     return taggedIndices[pointer++] !== idx ? true : false;
-          // })
+        reactor.data.slice(0, displayCount)
+          .filter((reactor, idx) => {
+              return taggedIndices[pointer++] !== idx ? true : false;
+          })
           .map((reactor, idx) => {
           const params = {
             url: reactor.url,
