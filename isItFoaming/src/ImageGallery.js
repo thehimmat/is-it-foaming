@@ -68,12 +68,12 @@ function ImageGallery() {
 
   const gridItems = ['item1', 'item2', 'item3'];
 
-  const parsePhotoDate = (photoURL) => {
-    return photoURL.slice(74, 84);
+  const parsePhotoDate = (imageURL) => {
+    return imageURL ? imageURL.slice(74, 84) : 'date error';
   }
 
-  const parsePhotoTime = (photoURL) => {
-    return photoURL.slice(88, 96);
+  const parsePhotoTime = (imageURL) => {
+    return imageURL ? imageURL.slice(88, 96) : 'time error';
   }
 
   const tagButton = (label, params) => {
@@ -84,13 +84,21 @@ function ImageGallery() {
           axios({
             method: 'POST',
             url: 'http://localhost:3001/' + label,
-            data: params,
+            data: { ...params },
+            params: params,
           })
             .then(result => {
-              console.log(result + ' successfully tagged image as ' + label)
+              console.log('investigate result: ', JSON.parse(result.config.data))
+              setFilter(label);
+              const transform = {
+                image_url: JSON.parse(result.config.data).url,
+                tag: JSON.parse(result.config.data).tag,
+                last_modified: JSON.parse(result.config.data).time,
+                array_index: JSON.parse(result.config.data).index,
+              }
               label === 'foaming'
-              ? setFoamingList([...foamingList, result])
-              : setNotFoamingList([...notFoamingList, result])
+              ? setFoamingList(prev => [...prev, transform])
+              : setNotFoamingList(prev => [...prev, transform])
             })
             .catch(err => {
               console.error('from button: ', err);
@@ -117,12 +125,11 @@ function ImageGallery() {
 
   const filteredImages = (filter) => {
     if (filter === 'no filter' && (foamingList[0] || notFoamingList[0])) {
-      let pointer = 0; // for filtering out tagged images
+      let pointer = 0;
       let foamPointer = 0;
       let notFoamPointer = 0;
       const coallatedImages = [];
-      while (foamingList[foamPointer] || notFoamingList[notFoamPointer] || pointer <= reactor.data.length) {
-        console.log('foam: ', foamingList[foamPointer], 'not foam: ', notFoamingList[notFoamPointer], 'pointer: ', pointer);
+      while ((foamingList[foamPointer] || notFoamingList[notFoamPointer]) || pointer <= 2100) {
         if (foamingList[foamPointer] && pointer > foamingList[foamPointer].array_index) {
           foamPointer++;
         } else if (notFoamingList[notFoamPointer] && pointer > notFoamingList[notFoamPointer].array_index) {
@@ -184,7 +191,9 @@ function ImageGallery() {
         })
       )
     } else if (filter === 'foaming') {
-      return (
+      return !foamingList.length
+        ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'red'}}>FOAMY</b> yet.</p>
+        : (
         foamingList.slice(0, displayCount).map((reactor, idx) => {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={'fd'+idx}>
             <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'fi'+idx} />
@@ -200,7 +209,9 @@ function ImageGallery() {
         })
       )
     } else if (filter === 'notFoaming') {
-      return (
+      return  !notFoamingList.length
+      ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'green'}}> NOT FOAMY</b> yet.</p>
+      : (
         notFoamingList.slice(0, displayCount).map((reactor, idx) => {
           return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
             <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />

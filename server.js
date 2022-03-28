@@ -30,8 +30,7 @@ async function getImages(tag) {
 
 // post new foaming image to DB
 app.post('/foaming', function(req, res) {
-  console.log('receiving foaming POST request')
-  const {url, time, index, tag} = req.body;
+  const {url, time, index, tag} = req.query;
   postImage(url, time, tag, index)
     .then(image => {
       res.status(200).send(image)
@@ -43,8 +42,7 @@ app.post('/foaming', function(req, res) {
 
 // post new notFoaming image to DB
 app.post('/notFoaming', function(req, res) {
-  console.log('receiving NOT foaming POST request')
-  const {url, time, index, tag} = req.body;
+  const {url, time, index, tag} = req.query;
   postImage(url, time, tag, index)
     .then(image => {
       res.status(200).send(image)
@@ -58,7 +56,6 @@ app.post('/notFoaming', function(req, res) {
 app.get('/foaming', function(req, res) {
   getImages('foaming')
     .then(imageList => {
-      console.log('server side list of foaming images: ', imageList)
       res.status(200).send(imageList);
     })
     .catch(err => {
@@ -70,7 +67,6 @@ app.get('/foaming', function(req, res) {
 app.get('/notFoaming', function(req, res) {
   getImages('notFoaming')
     .then(imageList => {
-      console.log('server side list of not foaming images: ', imageList)
       res.status(200).send(imageList);
     })
     .catch(err => {
