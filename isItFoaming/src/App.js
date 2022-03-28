@@ -7,7 +7,9 @@ function App() {
   return (
     <div className="App">
       <div className="App-grid-container">
-        <img src={culture} alt="culture" className="App-culture"/>
+        <a href='https://www.culturebiosciences.com/' target="_blank" rel="noreferrer">
+          <img src={culture} alt="culture" className="App-culture" />
+        </a>
         <header className="App-header">
           Is It Foaming?
         </header>
