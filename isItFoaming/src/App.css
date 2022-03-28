@@ -1,17 +1,55 @@
 .App {
   text-align: center;
-  font-family: Leaguespartan, sans-serif;
+  font-family: sans-serif;
+}
+
+.App-grid-container {
+  display: grid;
+  grid-template-columns: 250px auto 250px;
+  height: 30px;
+}
+
+.App-culture {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  display: flex;
+  float: left;
+  max-height: 50px;
 }
 
 .App-header {
+  grid-column-start: 2;
+  grid-column-end: 2;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(20px + 2vmin);
+  font-size: calc(7px + 2vmin);
   color: rgb(95, 95, 95);
   font-weight: 700;
+}
+
+.App-button {
+  grid-column-start: 3;
+  grid-column-end: 3;
+  display: flex;
+  float: right;
+  background-color: #fcce3b;
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  width: 250px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  max-height: 50px;
+}
+
+.App-button:hover {
+  background-color: #001149dc;
+  color: white;
 }
 
 .App-intro {

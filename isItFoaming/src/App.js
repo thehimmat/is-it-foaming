@@ -1,17 +1,23 @@
 import React from 'react';
 import ImageGallery from './ImageGallery.js';
+import culture from './culture.jpg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        Is It Foaming or Not?
-      </header>
+      <div className="App-grid-container">
+        <img src={culture} alt="culture" className="App-culture"/>
+        <header className="App-header">
+          Is It Foaming?
+        </header>
+        <a className="App-button" href='https://github.com/thehimmat/is-it-foaming' target="_blank" rel="noreferrer">
+          GitHub repo for this app
+        </a>
+      </div>
+      <br/>
       <p className="App-intro">
-        This application allows you to view images of reactors and mark them as foaming or not foaming. Please scroll through the images below and mark them appropriately. If you would like to only see images with certain tags (or absence thereof), you can use the filter function.
-
-        Thank you for using this application!
+        This application allows you to view images of reactors and mark them as foaming or not foaming.
       </p>
       <ImageGallery />
     </div>

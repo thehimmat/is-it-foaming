@@ -11,6 +11,9 @@ const imageDivStyle = {
   margin: '5px',
   display: 'grid'
 }
+
+const gridItems = ['item1', 'item2', 'item3'];
+
 const imageStyle = {
   maxWidth: '90%',
   padding: '1vh',
@@ -65,8 +68,6 @@ function ImageGallery() {
         console.error(err)
       })
   }, [])
-
-  const gridItems = ['item1', 'item2', 'item3'];
 
   const parsePhotoDate = (imageURL) => {
     return imageURL.slice(74, 84) || 'date error';
@@ -239,46 +240,20 @@ function ImageGallery() {
   return (
     <>
       <div>
-        Select a filter:
-        <input
-          type="radio"
-          value="no filter"
-          name="filter"
-          checked={filter === "no filter"}
-          onChange={changeFilter}
-        />
-        no filter
-        <input
-          type="radio"
-          value="unclassified"
-          name="filter"
-          checked={filter === "unclassified"}
-          onChange={changeFilter}
-        />
-        unclassified
-        <input
-          type="radio"
-          value="foaming"
-          name="filter"
-          checked={filter === "foaming"}
-          onChange={changeFilter}
-        />
-        foaming
-        <input
-          type="radio"
-          value="notFoaming"
-          name="filter"
-          checked={filter === "notFoaming"}
-          onChange={changeFilter}
-        />
-        not foaming
+        <span style={{display: "block", textAlign: "left", paddingLeft: "20px"}}>
+          <b>Select a filter: </b>
+          <input type="radio" value="no filter" name="filter" checked={filter === "no filter"} onChange={changeFilter} />
+          no filter |
+          <input type="radio" value="unclassified" name="filter" checked={filter === "unclassified"} onChange={changeFilter} />
+          unclassified |
+          <input type="radio" value="foaming" name="filter" checked={filter === "foaming"} onChange={changeFilter} />
+          foaming |
+          <input type="radio" value="notFoaming" name="filter" checked={filter === "notFoaming"} onChange={changeFilter} />
+          not foaming
+        </span>
+        <span style={{display: "block", textAlign: "right", paddingRight: "20px", fontSize: "12px"}}>displaying <b>{displayCount}</b> images</span>
       </div>
-      <div
-        className="grid-container"
-        onScroll={onScroll}
-        ref={ref}
-        style={{ height: "75vh", overflowY: "auto" }}
-      >
+      <div className="grid-container" onScroll={onScroll} ref={ref} style={{ height: "75vh", overflowY: "auto" }}>
         {filteredImages(filter)}
       </div>
     </>
