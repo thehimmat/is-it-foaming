@@ -137,12 +137,41 @@ function ImageGallery() {
     )
   }
 
-  const notFoamImageBox = {
-
+  const notFoamImageBox = (reactor, idx) => {
+    return (
+      <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
+        <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
+        <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
+          image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+        </p>
+        <p style={{color: 'green'}} key={'nfpp'+idx}>
+          Image marked as<br/>
+          <b key={'nfb'+idx}>NOT FOAMY</b><br/>
+          {dayjs(reactor.last_modified).fromNow()}
+        </p>
+      </div>
+    )
   }
 
-  const unclassifiedImageBox = {
-
+  const unclassifiedImageBox = (reactor, idx) => {
+    const params = {
+      url: reactor.url,
+      time: new Date(),
+      index: idx,
+    }
+    return (
+      <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
+        <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
+        <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
+          image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
+        </p>
+        <p key={'npp'+idx}>
+          <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
+          Mark image as:<br/>
+          {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+        </p>
+      </div>
+    )
   }
 
   const filteredImages = (filter) => {
@@ -182,34 +211,36 @@ function ImageGallery() {
             //   </p>
             // </div>
           } else if (reactor.tag === 'notFoaming') {
-            return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
-              <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
-              <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
-                image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
-              </p>
-              <p style={{color: 'green'}} key={'nfpp'+idx}>
-                Image marked as<br/>
-                <b key={'nfb'+idx}>NOT FOAMY</b><br/>
-                {dayjs(reactor.last_modified).fromNow()}
-              </p>
-            </div>
+            return notFoamImageBox(reactor, idx);
+            // return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
+            //   <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
+            //   <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
+            //     image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+            //   </p>
+            //   <p style={{color: 'green'}} key={'nfpp'+idx}>
+            //     Image marked as<br/>
+            //     <b key={'nfb'+idx}>NOT FOAMY</b><br/>
+            //     {dayjs(reactor.last_modified).fromNow()}
+            //   </p>
+            // </div>
           } else {
-            const params = {
-              url: reactor.url,
-              time: new Date(),
-              index: idx,
-            }
-            return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
-              <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
-              <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
-                image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
-              </p>
-              <p key={'npp'+idx}>
-                <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
-                Mark image as:<br/>
-                {tagButton('foaming', params)} {tagButton('notFoaming', params)}
-              </p>
-            </div>
+            return unclassifiedImageBox(reactor, idx);
+            // const params = {
+            //   url: reactor.url,
+            //   time: new Date(),
+            //   index: idx,
+            // }
+            // return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nd'+idx}>
+            //   <img style={imageStyle} src={reactor.url} alt='reactor' key={'ni'+idx} />
+            //   <p style={{fontSize: '10px', margin: '0px'}} key={'np'+idx}>
+            //     image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
+            //   </p>
+            //   <p key={'npp'+idx}>
+            //     <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
+            //     Mark image as:<br/>
+            //     {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+            //   </p>
+            // </div>
             }
         })
       )
@@ -218,17 +249,18 @@ function ImageGallery() {
         ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'red'}}>FOAMY</b> yet.</p>
         : (
         foamingList.slice(0, displayCount).map((reactor, idx) => {
-          return <div className={gridItems[idx%3]} style={imageDivStyle} key={'fd'+idx}>
-            <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'fi'+idx} />
-            <p style={{fontSize: '10px', margin: '0px'}} key={'fp'+idx}>
-              image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
-            </p>
-            <p style={{color: 'red'}} key={'fpp'+idx}>
-              Image marked as <br/>
-              <b key={'fb'+idx}>FOAMY</b><br/>
-              {dayjs(reactor.last_modified).fromNow()}
-            </p>
-          </div>
+          return foamImageBox(reactor, idx);
+          // return <div className={gridItems[idx%3]} style={imageDivStyle} key={'fd'+idx}>
+          //   <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'fi'+idx} />
+          //   <p style={{fontSize: '10px', margin: '0px'}} key={'fp'+idx}>
+          //     image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+          //   </p>
+          //   <p style={{color: 'red'}} key={'fpp'+idx}>
+          //     Image marked as <br/>
+          //     <b key={'fb'+idx}>FOAMY</b><br/>
+          //     {dayjs(reactor.last_modified).fromNow()}
+          //   </p>
+          // </div>
         })
       )
     } else if (filter === 'notFoaming') {
@@ -236,17 +268,18 @@ function ImageGallery() {
       ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'green'}}> NOT FOAMY</b> yet.</p>
       : (
         notFoamingList.slice(0, displayCount).map((reactor, idx) => {
-          return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
-            <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
-            <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
-              image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
-            </p>
-            <p style={{color: 'green'}} key={'nfpp'+idx}>
-              Image marked as<br/>
-              <b key={'nfb'+idx}>NOT FOAMY</b><br/>
-              {dayjs(reactor.last_modified).fromNow()}
-            </p>
-          </div>
+          return notFoamImageBox(reactor, idx);
+          // return <div className={gridItems[idx%3]} style={imageDivStyle} key={'nfd'+idx}>
+          //   <img style={imageStyle} src={reactor.image_url} alt='reactor' key={'nfi'+idx} />
+          //   <p style={{fontSize: '10px', margin: '0px'}} key={'nfp'+idx}>
+          //     image taken on {parsePhotoDate(reactor.image_url)} at {parsePhotoTime(reactor.image_url)}
+          //   </p>
+          //   <p style={{color: 'green'}} key={'nfpp'+idx}>
+          //     Image marked as<br/>
+          //     <b key={'nfb'+idx}>NOT FOAMY</b><br/>
+          //     {dayjs(reactor.last_modified).fromNow()}
+          //   </p>
+          // </div>
         })
       )
     } else {
@@ -254,25 +287,26 @@ function ImageGallery() {
       return (
         reactor.data.slice(0, displayCount)
           .filter((reactor, idx) => {
-              return taggedIndices[pointer++] !== idx ? true : false;
+            return taggedIndices[pointer++] !== idx ? true : false;
           })
           .map((reactor, idx) => {
-          const params = {
-            url: reactor.url,
-            time: new Date(),
-            index: idx,
-          }
-          return <div className={gridItems[idx%3]} style={imageDivStyle} key={idx}>
-            <img style={imageStyle} src={reactor.url} alt='reactor' key={reactor.url.slice(88, 90)} />
-            <p style={{fontSize: '10px', margin: '0px'}} key={reactor.url.slice(91, 93)}>
-              image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
-            </p>
-            <p key={reactor.url.slice(94, 96)}>
-              <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
-              Mark image as:<br/>
-              {tagButton('foaming', params)} {tagButton('notFoaming', params)}
-            </p>
-          </div>
+            return unclassifiedImageBox(reactor, idx);
+          // const params = {
+          //   url: reactor.url,
+          //   time: new Date(),
+          //   index: idx,
+          // }
+          // return <div className={gridItems[idx%3]} style={imageDivStyle} key={idx}>
+          //   <img style={imageStyle} src={reactor.url} alt='reactor' key={reactor.url.slice(88, 90)} />
+          //   <p style={{fontSize: '10px', margin: '0px'}} key={reactor.url.slice(91, 93)}>
+          //     image taken on {parsePhotoDate(reactor.url)} at {parsePhotoTime(reactor.url)}
+          //   </p>
+          //   <p key={reactor.url.slice(94, 96)}>
+          //     <b key={'npp'+idx}>UNCLASSIFIED</b><br/>
+          //     Mark image as:<br/>
+          //     {tagButton('foaming', params)} {tagButton('notFoaming', params)}
+          //   </p>
+          // </div>
         })
       )
     }
