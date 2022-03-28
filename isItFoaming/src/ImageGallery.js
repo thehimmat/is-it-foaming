@@ -89,7 +89,7 @@ function ImageGallery() {
           })
             .then(result => {
               console.log('investigate result: ', JSON.parse(result.config.data))
-              setFilter(label);
+              if (filter === 'unclassified') setFilter(label);
               const transform = {
                 image_url: JSON.parse(result.config.data).url,
                 tag: JSON.parse(result.config.data).tag,
