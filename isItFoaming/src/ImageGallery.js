@@ -69,11 +69,11 @@ function ImageGallery() {
   const gridItems = ['item1', 'item2', 'item3'];
 
   const parsePhotoDate = (imageURL) => {
-    return imageURL ? imageURL.slice(74, 84) : 'date error';
+    return imageURL.slice(74, 84) || 'date error';
   }
 
   const parsePhotoTime = (imageURL) => {
-    return imageURL ? imageURL.slice(88, 96) : 'time error';
+    return imageURL.slice(88, 96) || 'time error';
   }
 
   const tagButton = (label, params) => {
