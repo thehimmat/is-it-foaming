@@ -209,7 +209,7 @@ function ImageGallery() {
       )
     } else if (filter === 'foaming') {
       return !foamingList.length
-        ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'red'}}>FOAMY</b> yet.</p>
+        ? <p style={{fontSize: '30px'}} className='item2'>There are no images tagged as <b style={{color: 'red'}}>FOAMY</b> yet.</p>
         : (
         foamingList.slice(0, displayCount).map((reactor, idx) => {
           return foamImageBox(reactor, idx);
@@ -217,8 +217,8 @@ function ImageGallery() {
       )
     } else if (filter === 'notFoaming') {
       return  !notFoamingList.length
-      ? <p style={{fontSize: '30px'}}>There are no images tagged as <b style={{color: 'green'}}> NOT FOAMY</b> yet.</p>
-      : (
+        ? <p style={{fontSize: '30px'}} className='item2'>There are no images tagged as <b style={{color: 'green'}}> NOT FOAMY</b> yet.</p>
+        : (
         notFoamingList.slice(0, displayCount).map((reactor, idx) => {
           return notFoamImageBox(reactor, idx);
         })
