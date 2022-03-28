@@ -80,7 +80,6 @@ function ImageGallery() {
     return (
       <button onClick={() => {
           params.tag = label;
-          console.log('perform ' + label + ' axios request with ', params)
           axios({
             method: 'POST',
             url: 'http://localhost:3001/' + label,
@@ -88,7 +87,6 @@ function ImageGallery() {
             params: params,
           })
             .then(result => {
-              console.log('investigate result: ', JSON.parse(result.config.data))
               if (filter === 'unclassified') setFilter(label);
               const transform = {
                 image_url: JSON.parse(result.config.data).url,
