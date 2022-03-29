@@ -1,10 +1,6 @@
 const postgres = require('postgres');
 
-const db = postgres({
-  user: 'himmat',
-  password: 'magicalfoamygoatblue',
-  database: 'isitfoaming'
-})
+const db = postgres({})
 
 module.exports = db;
 
