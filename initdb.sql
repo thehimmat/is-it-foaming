@@ -1,9 +1,7 @@
-DROP DATABASE isitfoaming;
+DROP DATABASE IF EXISTS isitfoaming;
 CREATE DATABASE isitfoaming;
 
--- USE isitfoaming;
-
-DROP TABLE reactorfoam;
+DROP TABLE IF EXISTS reactorfoam;
 CREATE TABLE reactorfoam (
   reactor_id SERIAL PRIMARY KEY,
   image_url VARCHAR(255),

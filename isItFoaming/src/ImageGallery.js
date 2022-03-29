@@ -57,7 +57,7 @@ function ImageGallery() {
         handleFoamingListChange(imageList.data)
       })
       .catch(err => {
-        console.error(err)
+        console.error('failed to GET foaming images', err)
       })
 
     axios('http://localhost:3001/notFoaming')
@@ -65,7 +65,7 @@ function ImageGallery() {
         handleNotFoamingListChange(imageList.data)
       })
       .catch(err => {
-        console.error(err)
+        console.error('failed to GET not foaming images', err)
       })
   }, [])
 
