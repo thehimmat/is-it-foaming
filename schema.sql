@@ -1,5 +1,9 @@
+DROP DATABASE isitfoaming;
 CREATE DATABASE isitfoaming;
 
+-- USE isitfoaming;
+
+DROP TABLE reactorfoam;
 CREATE TABLE reactorfoam (
   reactor_id SERIAL PRIMARY KEY,
   image_url VARCHAR(255),
@@ -7,6 +11,4 @@ CREATE TABLE reactorfoam (
   tag VARCHAR(16),
   array_index smallint
 );
-
-COPY reactorfoam (image_url, last_modified) FROM '/Users/himmat/takehome-challenges/culture-biosciences/is-it-foam/database/reactor-data.txt';
 

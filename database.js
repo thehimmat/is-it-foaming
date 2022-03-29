@@ -1,8 +1,8 @@
 const postgres = require('postgres');
 
 const db = postgres({
-  user: 'himmat',
-  password: 'magicalfoamygoatblue',
+  user: 'root',
+  password: '',
   database: 'isitfoaming'
 })
 
