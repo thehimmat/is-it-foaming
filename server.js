@@ -36,6 +36,7 @@ app.post('/foaming', function(req, res) {
       res.status(200).send(image)
     })
     .catch(err => {
+      console.error('Error with POST request for foaming image')
       res.status(400).send(err)
     })
 });
@@ -48,6 +49,7 @@ app.post('/notFoaming', function(req, res) {
       res.status(200).send(image)
     })
     .catch(err => {
+      console.error('Error with POST request for notFoaming image')
       res.status(400).send(err)
     })
 });
@@ -59,6 +61,7 @@ app.get('/foaming', function(req, res) {
       res.status(200).send(imageList);
     })
     .catch(err => {
+      console.error('Error with GET request for foaming images')
       res.status(400).send(err)
     })
 })
@@ -70,6 +73,7 @@ app.get('/notFoaming', function(req, res) {
       res.status(200).send(imageList);
     })
     .catch(err => {
+      console.error('Error with GET request for notFoaming images')
       res.status(400).send(err)
     })
 })

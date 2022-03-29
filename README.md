@@ -23,11 +23,19 @@
 > * dayjs
 > * Axios
 > * PostgreSQL
+
+## Pre-Requirements
+* have Node installed
+* have postgreSQL installed
 ## Local Setup
 > 1. `git clone git@github.com:thehimmat/is-it-foaming.git`
-> 2. `npm install && cd isItFoaming npm install`
-> 3. `psql -U `<root/psql-username>` < schema.sql`
-> 3. `npm start`
+> 2. `cd is-it-foaming && npm install`
+> 3. `cd isItFoaming && npm install`
+> 4. `cd .. && psql -d postgres < initdb.sql`
+> 5. `npm start`
+
+## Uninstallation
+> * delete `node_modules` folder in is-it-foaming and after using the application
 ### Known Bug
 > When viewing images by the "unclassified" filter, images aren't immediately removed and marked. The bandaid solution was to force the filter to change to whatever the image was tagged as. Those images still stay in the unclassified filter view until refresh.
 ## Creator
