@@ -8,24 +8,24 @@ app.use(cors());
 app.set("port", process.env.PORT || 3001);
 
 async function postImage(url, time, tag, index) {
-  console.log(`received query to post a new image`)
+  console.log(`posting new image as ${tag}...`)
   const image = await db`
     INSERT INTO reactorfoam
       (image_url, last_modified, tag, array_index)
     VALUES
       (${url}, ${time}, ${tag}, ${index});
   `
-  console.log(`with this query: ${image}`)
+  console.log(`successfully posted image to database`)
   return image;
 }
 
 async function getImages(tag) {
-  console.log(`received query to get all ${tag} images`)
+  console.log(`querying to get all ${tag} images...`)
   const imageList = await db`
     SELECT * FROM reactorfoam
     WHERE tag = ${tag};
   `
-  console.log(`with this query: ${imageList}`)
+  console.log(`received ${imageList?.length} ${tag} images`)
   return imageList;
 }
 
@@ -37,7 +37,7 @@ app.post('/foaming', function(req, res) {
       res.status(200).send(image)
     })
     .catch(err => {
-      console.error('Error with POST request for foaming image')
+      console.error('Error with POST request for foaming image: ', err)
       res.status(400).send(err)
     })
 });
@@ -50,7 +50,7 @@ app.post('/notFoaming', function(req, res) {
       res.status(200).send(image)
     })
     .catch(err => {
-      console.error('Error with POST request for notFoaming image')
+      console.error('Error with POST request for notFoaming image: ', err)
       res.status(400).send(err)
     })
 });
